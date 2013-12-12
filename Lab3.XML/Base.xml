@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 (http://www.altova.com) by Maxim (Hordijchuk) -->
+<mediaDatabase>
+	<film ID="1">
+		<title>Побег из Шоушенка</title>
+		<genre>драма</genre>
+		<genre>кримінал</genre>
+		<year>1994</year>
+		<country>США</country>
+		<director>Френк Дарабонт</director>
+		<character>Тім Роббінс</character>
+		<character>Морган Фріман</character>
+		<character>Боб Гантон</character>
+		<rate>
+			<IMDB>1</IMDB>
+			<kinopoisk>9.2</kinopoisk>
+		</rate>
+		<anotation>Шоушенк - назва в'язниці. І якщо тобі немає ще 30-ти, а ти отримуєш довічне, то приготуйся до гіршого: для тебе виходу з Шоушенка не буде!
+
+Актриса Ріта Хейворт - улюблениця всієї Америки. Енді Дюфрейна вона теж дуже подобалася. Рита ніколи не чула про існування Енді, проте життя Дюфрейна, колишньому віце-президенту великого банку, засудженому за вбивство дружини і її коханця, Ріта Хейворт все-таки врятувала.</anotation>
+	</film>
+</mediaDatabase>
