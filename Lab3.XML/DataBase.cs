@@ -51,9 +51,13 @@ namespace Lab3.XML
 
         public void CreateNode()
         {
-            XmlNode node = _studentDatabase.CreateNode(XmlNodeType.Text, "TextNode", null);
-            
-            _studentDatabase.Save("newXML.xml");
+            //var node = _studentDatabase.SelectSingleNode("//rate");
+            //node.Attributes["IMDB"].Value = "2";
+            //var node = _studentDatabase.SelectSingleNode("//country");
+            //node.FirstChild.Value = "Росія";
+            //node.AppendChild(_studentDatabase.CreateTextNode("zskjfgkjzfskbgkbsfg"));
+            //root.AppendChild(node);
+            _studentDatabase.Save(@"d:\Projects\UnivProjects\Lab3.XML\Lab3.XML\newBase.xml");
         }
     }
 }
