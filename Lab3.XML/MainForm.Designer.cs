@@ -82,7 +82,7 @@
             this.xmlPath.Name = "xmlPath";
             this.xmlPath.Size = new System.Drawing.Size(523, 20);
             this.xmlPath.TabIndex = 2;
-            this.xmlPath.Text = "C:\\Users\\Vlad\\Documents\\GitHub\\Lab3.XML\\Lab3.XML\\base.xml";
+            this.xmlPath.Text = "C:\\Users\\Роман\\Documents\\GitHub\\Lab3.XML\\Lab3.XML\\base.xml";
             this.xmlPath.KeyDown += new System.Windows.Forms.KeyEventHandler(this.xmlPath_KeyDown);
             // 
             // xmlPathInvite

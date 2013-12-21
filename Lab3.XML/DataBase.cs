@@ -15,14 +15,14 @@ namespace Lab3.XML
     {
         private MainForm _mainForm;
         private string _filePath = null;
-        private XmlQuery dataBaseQuery = new XmlQuery();
+        private XmlQuery _dataBaseQuery = new XmlQuery();
 
         public DataBase(MainForm mainForm)
         {
             _mainForm = mainForm;
         }
 
-        private void init(XDocument dataBase)
+        private void Init(XDocument dataBase)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace Lab3.XML
         {
             if (String.IsNullOrEmpty(path))
             {
-                _mainForm.ChangeXmlPath(_filePath == null ? "" : _filePath);
+                _mainForm.ChangeXmlPath(_filePath ?? "");
                 //View LoadXmlDocumentError
                 return;
             }
@@ -54,21 +54,32 @@ namespace Lab3.XML
                 var dataBase = XDocument.Load(path);
                 _filePath = path;
                 _mainForm.ChangeXmlPath(path);
-                init(dataBase);
-                dataBaseQuery.LoadXmlFile(path);
-                dataBaseQuery.LinqToXmlQuery();                
+                Init(dataBase);
+                _dataBaseQuery.LoadXmlFile(path);
+                _dataBaseQuery.LinqToXmlQuery();                
             }
             catch (Exception)
             {
-               _mainForm.ChangeXmlPath(_filePath == null ? "" : _filePath);
+               _mainForm.ChangeXmlPath(_filePath ?? "");
                 //View LoadXmlDocumentError
             }
         }
 
-        public string GetResult()
+        public string GetResult(string title, string genre, int fromYear, int toYear, string country, string director,
+            string actor, int imdbRate, double kinopoiskRate, string anotation, int length)
         {
-            //return GetNodes(_studentDatabase.DocumentElement);
-            return "";
+            _dataBaseQuery.Title = title;
+            _dataBaseQuery.Genre = genre;
+            _dataBaseQuery.FromYear = fromYear;
+            _dataBaseQuery.ToYear = toYear;
+            _dataBaseQuery.Country = country;
+            _dataBaseQuery.Director = director;
+            _dataBaseQuery.Actor = actor;
+            _dataBaseQuery.ImdbRate = imdbRate;
+            _dataBaseQuery.KinopoiskRate = kinopoiskRate;
+            _dataBaseQuery.Anotation = anotation;
+            _dataBaseQuery.Length = length;
+            return _dataBaseQuery.LinqToXmlQuery();
         }
 
         string GetNodes(XmlNode node)
