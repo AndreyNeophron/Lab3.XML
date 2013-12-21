@@ -18,18 +18,47 @@ namespace Lab3.XML
         {
             InitializeComponent();
             dataBase = new DataBase(this);
+            dataBase.LoadXmlDocument(xmlPath.Text);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void findButton_Click(object sender, EventArgs e)
         {
-            string result = dataBase.GetNodes();
-            richTextBox1.Clear();
-            richTextBox1.AppendText(result);
+            string result = dataBase.GetResult();
+            resultView.Clear();
+            resultView.AppendText(result);
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void xmlPath_KeyDown(object sender, KeyEventArgs e)
         {
-            dataBase.CreateNode();
+            if (e.KeyCode == Keys.Enter)
+            {
+                dataBase.LoadXmlDocument(xmlPath.Text);
+            }
+        }
+
+        public void ChangeXmlPath(string path)
+        {
+            xmlPath.Text = path;
+        }
+
+        public void UpdateGenres(List<string> genres)
+        {
+            if (genres == null)
+                return;
+            this.genres.Items.Clear();
+            this.genres.Items.Add("");
+            foreach (var genre in genres)
+                this.genres.Items.Add(genre);
+        }
+
+        public void UpdateCountries(List<string> countries)
+        {
+            if (countries == null)
+                return;
+            this.countries.Items.Clear();
+            this.countries.Items.Add("");
+            foreach (var country in countries)
+                this.countries.Items.Add(country);
         }
     }
 }

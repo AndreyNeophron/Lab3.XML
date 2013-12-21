@@ -6,31 +6,69 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.IO;
 using System.Xml.Serialization;
+using System.Xml.Linq;
+using System.Windows.Forms;
 
 namespace Lab3.XML
 {
     class DataBase
     {
-        private XmlDocument _studentDatabase;
         private MainForm _mainForm;
-        private const string FilePath = @"d:\Projects\UnivProjects\Lab3.XML\Lab3.XML\Base.xml";
+        private string _filePath = null;
+        private XmlQuery dataBaseQuery = new XmlQuery();
 
         public DataBase(MainForm mainForm)
         {
-            this._mainForm = mainForm;
-            LoadXmlDocument(FilePath);
+            _mainForm = mainForm;
         }
 
-        void LoadXmlDocument(string path)
+        private void init(XDocument dataBase)
         {
-            if (_studentDatabase == null)
-                _studentDatabase = new XmlDocument();
-            _studentDatabase.Load(path);
+            try
+            {
+                var genres = (from film in dataBase.Descendants("genre")
+                              select film.Nodes().FirstOrDefault().ToString()).ToList();
+                genres = genres.Distinct().ToList();
+                _mainForm.UpdateGenres(genres);
+                var countries = (from film in dataBase.Descendants("country")
+                               select film.Nodes().FirstOrDefault().ToString()).ToList();
+                countries = countries.Distinct().ToList();
+                _mainForm.UpdateCountries(countries);
+            }
+            catch (Exception)
+            {
+                //View xmlFileInitError
+            }
         }
 
-        public string GetNodes()
+        public void LoadXmlDocument(string path)
         {
-            return GetNodes(_studentDatabase.DocumentElement);
+            if (String.IsNullOrEmpty(path))
+            {
+                _mainForm.ChangeXmlPath(_filePath == null ? "" : _filePath);
+                //View LoadXmlDocumentError
+                return;
+            }
+            try
+            {
+                var dataBase = XDocument.Load(path);
+                _filePath = path;
+                _mainForm.ChangeXmlPath(path);
+                init(dataBase);
+                dataBaseQuery.LoadXmlFile(path);
+                dataBaseQuery.LinqToXmlQuery();                
+            }
+            catch (Exception)
+            {
+               _mainForm.ChangeXmlPath(_filePath == null ? "" : _filePath);
+                //View LoadXmlDocumentError
+            }
+        }
+
+        public string GetResult()
+        {
+            //return GetNodes(_studentDatabase.DocumentElement);
+            return "";
         }
 
         string GetNodes(XmlNode node)
@@ -57,7 +95,7 @@ namespace Lab3.XML
             //node.FirstChild.Value = "Росія";
             //node.AppendChild(_studentDatabase.CreateTextNode("zskjfgkjzfskbgkbsfg"));
             //root.AppendChild(node);
-            _studentDatabase.Save(@"d:\Projects\UnivProjects\Lab3.XML\Lab3.XML\newBase.xml");
+            //_studentDatabase.Save(@"d:\Projects\UnivProjects\Lab3.XML\Lab3.XML\newBase.xml");
         }
     }
 }
