@@ -29,7 +29,7 @@ namespace Lab3.XML
             int toYear = yearCheck.Checked ? this.toYear.Value.Year : -1;
             string country = countryCheck.Checked ? this.countries.SelectedItem.ToString() : "";
             string director = directorCheck.Checked ? this.director.Text : "";
-            string actor = directorCheck.Checked ? this.director.Text : "";
+            string actor = actorCheck.Checked ? this.actor.Text : "";
             int imdbRate;
             try
             {
@@ -97,10 +97,11 @@ namespace Lab3.XML
                 length = -1;
                 this.length.Text = "";
             }
-            string result = dataBase.GetResult(title, genre, fromYear, toYear, country, director, actor, imdbRate,
-                kinopoiskRate, anotation, length);
-            resultView.Clear();
-            resultView.AppendText(result);
+            var queryMethodView = new QueryMethodView();
+            queryMethodView.ShowDialog();
+            int queryMethod = queryMethodView.GetQueryMethod();
+            dataBase.GetResult(title, genre, fromYear, toYear, country, director, actor, imdbRate,
+                kinopoiskRate, anotation, length, queryMethod);
         }
 
         private void xmlPath_KeyDown(object sender, KeyEventArgs e)
@@ -134,6 +135,17 @@ namespace Lab3.XML
             this.countries.Items.Add("");
             foreach (var country in countries)
                 this.countries.Items.Add(country);
+        }
+
+        public void ViewResult(string result)
+        {
+            resultView.Clear();
+            resultView.AppendText(result);
+        }
+
+        private void makeXslTransform_Click(object sender, EventArgs e)
+        {
+            dataBase.MakeXslTransform();
         }
     }
 }

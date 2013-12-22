@@ -56,6 +56,7 @@
             this.kinopoiskRate = new System.Windows.Forms.TextBox();
             this.anotation = new System.Windows.Forms.TextBox();
             this.length = new System.Windows.Forms.TextBox();
+            this.makeXslTransform = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // resultView
@@ -301,11 +302,23 @@
             this.length.Size = new System.Drawing.Size(190, 20);
             this.length.TabIndex = 27;
             // 
+            // makeXslTransform
+            // 
+            this.makeXslTransform.Location = new System.Drawing.Point(93, 310);
+            this.makeXslTransform.Name = "makeXslTransform";
+            this.makeXslTransform.Size = new System.Drawing.Size(147, 23);
+            this.makeXslTransform.TabIndex = 28;
+            this.makeXslTransform.Text = "Трансформувати в HTML";
+            this.makeXslTransform.UseVisualStyleBackColor = true;
+            this.makeXslTransform.Click += new System.EventHandler(this.makeXslTransform_Click);
+            // 
             // MainForm
             // 
+            this.AcceptButton = this.findButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(655, 345);
+            this.Controls.Add(this.makeXslTransform);
             this.Controls.Add(this.length);
             this.Controls.Add(this.anotation);
             this.Controls.Add(this.kinopoiskRate);
@@ -333,7 +346,9 @@
             this.Controls.Add(this.xmlPath);
             this.Controls.Add(this.findButton);
             this.Controls.Add(this.resultView);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "DataBase";
             this.ResumeLayout(false);
@@ -370,6 +385,7 @@
         private System.Windows.Forms.TextBox kinopoiskRate;
         private System.Windows.Forms.TextBox anotation;
         private System.Windows.Forms.TextBox length;
+        private System.Windows.Forms.Button makeXslTransform;
     }
 }
 

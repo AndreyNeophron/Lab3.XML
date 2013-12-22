@@ -45,6 +45,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataBase.cs" />
+    <Compile Include="QueryMethodView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="QueryMethodView.Designer.cs">
+      <DependentUpon>QueryMethodView.cs</DependentUpon>
+    </Compile>
     <Compile Include="XmlQuery.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -67,6 +73,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="QueryMethodView.resx">
+      <DependentUpon>QueryMethodView.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

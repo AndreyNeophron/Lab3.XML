@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -99,7 +100,7 @@ namespace Lab3.XML
         public void ClearQuery()
         {
             _title = "";
-            _genre = "кримінал";
+            _genre = "";
             _fromYear = -1;
             _toYear = -1;
             _country = "";
@@ -142,7 +143,7 @@ namespace Lab3.XML
                             film.Descendants("director").ToList().Exists(a => a.FirstNode.ToString().Contains(_director)) &&
                             film.Descendants("character").ToList().Exists(a => a.FirstNode.ToString().Contains(_actor)) &&
                             (_imdbRate == -1 || (int)film.Descendants("rate").FirstOrDefault().Attribute("IMDB") >= _imdbRate) &&
-                            (Math.Abs(_kinopoiskRate + 1) < 1e-6 || (double)film.Descendants("rate").FirstOrDefault().Attribute("kinopoisk") >= _kinopoiskRate) &&
+                            (Math.Abs(_kinopoiskRate + 1) < 1e-6 || (double)film.Descendants("rate").FirstOrDefault().Attribute("kinopoisk") >= _kinopoiskRate - 1e-6) &&
                             film.Descendants("anotation").FirstOrDefault().FirstNode.ToString().Contains(_anotation) &&
                             (_length == -1 || Convert.ToInt32(film.Descendants("length").FirstOrDefault().FirstNode.ToString()) >= _length)
                           )
@@ -164,6 +165,7 @@ namespace Lab3.XML
                               length = Convert.ToInt32(film.Descendants("length").FirstOrDefault().FirstNode.ToString())
                           }).ToList();
             var resultString = new StringBuilder();
+            resultString.AppendLine("Кількість результатів: " + result.Count + "\n");
             foreach (var item in result)
             {
                 resultString.Append("Назва: " + item.title);
@@ -217,88 +219,128 @@ namespace Lab3.XML
 
         public string XPathQuery()
         {
-            if (_domDataBase == null)
-                return "";
-            var result = (from film in _linqDataBase.Descendants("film")
-                          where (
-                            film.Descendants("title").FirstOrDefault().FirstNode.ToString().Contains(_title) &&
-                            (_genre == "" || film.Descendants("genre").ToList().Exists(a => (a.FirstNode.ToString() == _genre))) &&
-                            (_fromYear == -1 || (Convert.ToInt32(film.Descendants("year").FirstOrDefault().FirstNode.ToString()) >= _fromYear || Convert.ToInt32(film.Descendants("year").FirstOrDefault().FirstNode.ToString()) <= _toYear)) &&
-                            (_country == "" || film.Descendants("country").ToList().Exists(a => a.FirstNode.ToString() == _country)) &&
-                            film.Descendants("director").ToList().Exists(a => a.FirstNode.ToString().Contains(_director)) &&
-                            film.Descendants("character").ToList().Exists(a => a.FirstNode.ToString().Contains(_actor)) &&
-                            (_imdbRate == -1 || (int)film.Descendants("rate").FirstOrDefault().Attribute("IMDB") >= _imdbRate) &&
-                            (Math.Abs(_kinopoiskRate + 1) < 1e-6 || (double)film.Descendants("rate").FirstOrDefault().Attribute("kinopoisk") >= _kinopoiskRate) &&
-                            film.Descendants("anotation").FirstOrDefault().FirstNode.ToString().Contains(_anotation) &&
-                            (_length == -1 || Convert.ToInt32(film.Descendants("length").FirstOrDefault().FirstNode.ToString()) >= _length)
-                          )
-                          select new
-                          {
-                              title = film.Descendants("title").FirstOrDefault().FirstNode.ToString(),
-                              genres = (from genre in film.Descendants("genre")
-                                        select genre.FirstNode.ToString()).ToList(),
-                              year = Convert.ToInt32(film.Descendants("year").FirstOrDefault().FirstNode.ToString()),
-                              countries = (from country in film.Descendants("country")
-                                           select country.FirstNode.ToString()).ToList(),
-                              directors = (from director in film.Descendants("director")
-                                           select director.FirstNode.ToString()).ToList(),
-                              actors = (from actor in film.Descendants("character")
-                                        select actor.FirstNode.ToString()).ToList(),
-                              imdbRate = (int)film.Descendants("rate").FirstOrDefault().Attribute("IMDB"),
-                              kinopoiskRate = (double)film.Descendants("rate").FirstOrDefault().Attribute("kinopoisk"),
-                              anotation = film.Descendants("anotation").FirstOrDefault().FirstNode.ToString(),
-                              length = Convert.ToInt32(film.Descendants("length").FirstOrDefault().FirstNode.ToString())
-                          }).ToList();
+            XmlDocument resultDocument = (XmlDocument)_domDataBase.CloneNode(true), tempDocument = (XmlDocument)_domDataBase.CloneNode(true);
+            XmlNodeList resultNodes;
+            resultNodes = resultDocument.SelectNodes("/mediaDatabase/film[contains(title, '" + _title + "')]");
+            tempDocument.SelectSingleNode("mediaDatabase").RemoveAll();
+            foreach (XmlNode item in resultNodes)
+                tempDocument.SelectSingleNode("mediaDatabase").AppendChild(tempDocument.ImportNode(item, true));
+            resultDocument = (XmlDocument) tempDocument.CloneNode(true);
+
+            resultNodes = resultDocument.SelectNodes("/mediaDatabase/film['" + _genre + "'='' or ./genre[child::text()='" + _genre + "']]");
+            tempDocument.SelectSingleNode("mediaDatabase").RemoveAll();
+            foreach (XmlNode item in resultNodes)
+                tempDocument.SelectSingleNode("mediaDatabase").AppendChild(tempDocument.ImportNode(item, true));
+            resultDocument = (XmlDocument)tempDocument.CloneNode(true);
+
+            resultNodes = resultDocument.SelectNodes("/mediaDatabase/film[" + _fromYear + "=-1 or (year>=" + _fromYear + " and year<=" + _toYear + ")]");
+            tempDocument.SelectSingleNode("mediaDatabase").RemoveAll();
+            foreach (XmlNode item in resultNodes)
+                tempDocument.SelectSingleNode("mediaDatabase").AppendChild(tempDocument.ImportNode(item, true));
+            resultDocument = (XmlDocument)tempDocument.CloneNode(true);
+
+            resultNodes = resultDocument.SelectNodes("/mediaDatabase/film['" + _country + "'='' or ./country[child::text()='" + _country + "']]");
+            tempDocument.SelectSingleNode("mediaDatabase").RemoveAll();
+            foreach (XmlNode item in resultNodes)
+                tempDocument.SelectSingleNode("mediaDatabase").AppendChild(tempDocument.ImportNode(item, true));
+            resultDocument = (XmlDocument)tempDocument.CloneNode(true);
+
+            resultNodes = resultDocument.SelectNodes("/mediaDatabase/film[./director[contains(., '" + _director + "')]]");
+            tempDocument.SelectSingleNode("mediaDatabase").RemoveAll();
+            foreach (XmlNode item in resultNodes)
+                tempDocument.SelectSingleNode("mediaDatabase").AppendChild(tempDocument.ImportNode(item, true));
+            resultDocument = (XmlDocument)tempDocument.CloneNode(true);
+
+            resultNodes = resultDocument.SelectNodes("/mediaDatabase/film[./character[contains(., '" + _actor + "')]]");
+            tempDocument.SelectSingleNode("mediaDatabase").RemoveAll();
+            foreach (XmlNode item in resultNodes)
+                tempDocument.SelectSingleNode("mediaDatabase").AppendChild(tempDocument.ImportNode(item, true));
+            resultDocument = (XmlDocument)tempDocument.CloneNode(true);
+
+            resultNodes = resultDocument.SelectNodes("/mediaDatabase/film[" + _imdbRate + "=-1 or rate[@IMDB>=" + _imdbRate + "]]");
+            tempDocument.SelectSingleNode("mediaDatabase").RemoveAll();
+            foreach (XmlNode item in resultNodes)
+                tempDocument.SelectSingleNode("mediaDatabase").AppendChild(tempDocument.ImportNode(item, true));
+            resultDocument = (XmlDocument)tempDocument.CloneNode(true);
+
+            resultNodes = resultDocument.SelectNodes("/mediaDatabase/film[" + Convert.ToDouble(_kinopoiskRate).ToString("G", CultureInfo.InvariantCulture) + "=-1 or rate[@kinopoisk>=" + (Convert.ToDouble(_kinopoiskRate) - 1e-6).ToString("G", CultureInfo.InvariantCulture) + "]]");
+            tempDocument.SelectSingleNode("mediaDatabase").RemoveAll();
+            foreach (XmlNode item in resultNodes)
+                tempDocument.SelectSingleNode("mediaDatabase").AppendChild(tempDocument.ImportNode(item, true));
+            resultDocument = (XmlDocument)tempDocument.CloneNode(true);
+
+            resultNodes = resultDocument.SelectNodes("/mediaDatabase/film[" + _length + "=-1 or length=" + _length + "]");
+            tempDocument.SelectSingleNode("mediaDatabase").RemoveAll();
+            foreach (XmlNode item in resultNodes)
+                tempDocument.SelectSingleNode("mediaDatabase").AppendChild(tempDocument.ImportNode(item, true));
+            resultDocument = (XmlDocument)tempDocument.CloneNode(true);
+
+            resultNodes = resultDocument.SelectNodes("/mediaDatabase/film[contains(anotation, '" + _anotation + "')]");
+            tempDocument.SelectSingleNode("mediaDatabase").RemoveAll();
+            foreach (XmlNode item in resultNodes)
+                tempDocument.SelectSingleNode("mediaDatabase").AppendChild(tempDocument.ImportNode(item, true));
+            resultDocument = (XmlDocument)tempDocument.CloneNode(true);
+
             var resultString = new StringBuilder();
-            foreach (var item in result)
+            resultString.AppendLine("Кількість результатів: " +
+                                    resultDocument.SelectSingleNode("mediaDatabase").ChildNodes.Count + "\n");
+            foreach (XmlNode item in resultDocument.SelectSingleNode("mediaDatabase").ChildNodes)
             {
-                resultString.Append("Назва: " + item.title);
+                resultString.Append("Назва: " + item.SelectSingleNode("title").FirstChild.Value);
                 resultString.AppendLine();
-                for (int i = 0; i < item.genres.Count; i++)
+                for (int i = 0; i < item.SelectNodes("genre").Count; i++)
                 {
                     if (i == 0)
-                        resultString.Append("Жанри: " + item.genres[i]);
+                        resultString.Append("Жанри: " + item.SelectNodes("genre")[i].FirstChild.Value);
                     else
-                        resultString.Append(", " + item.genres[i]);
+                        resultString.Append(", " + item.SelectNodes("genre")[i].FirstChild.Value);
                 }
                 resultString.AppendLine();
-                resultString.Append("Рік: " + item.year);
+                resultString.Append("Рік: " + item.SelectSingleNode("year").FirstChild.Value);
                 resultString.AppendLine();
-                for (int i = 0; i < item.countries.Count; i++)
+                for (int i = 0; i < item.SelectNodes("country").Count; i++)
                 {
                     if (i == 0)
-                        resultString.Append("Країни: " + item.countries[i]);
+                        resultString.Append("Країни: " + item.SelectNodes("country")[i].FirstChild.Value);
                     else
-                        resultString.Append(", " + item.countries[i]);
+                        resultString.Append(", " + item.SelectNodes("country")[i].FirstChild.Value);
                 }
                 resultString.AppendLine();
-                for (int i = 0; i < item.directors.Count; i++)
+                for (int i = 0; i < item.SelectNodes("director").Count; i++)
                 {
                     if (i == 0)
-                        resultString.Append("Режисери: " + item.directors[i]);
+                        resultString.Append("Режисери: " + item.SelectNodes("director")[i].FirstChild.Value);
                     else
-                        resultString.Append(", " + item.directors[i]);
+                        resultString.Append(", " + item.SelectNodes("director")[i].FirstChild.Value);
                 }
                 resultString.AppendLine();
-                for (int i = 0; i < item.actors.Count; i++)
+                for (int i = 0; i < item.SelectNodes("character").Count; i++)
                 {
                     if (i == 0)
-                        resultString.Append("Актори: " + item.actors[i]);
+                        resultString.Append("Актори: " + item.SelectNodes("character")[i].FirstChild.Value);
                     else
-                        resultString.Append(", " + item.actors[i]);
+                        resultString.Append(", " + item.SelectNodes("character")[i].FirstChild.Value);
                 }
                 resultString.AppendLine();
-                resultString.Append("Рейтинг IMDB: " + item.imdbRate);
+                resultString.Append("Рейтинг IMDB: " + item.SelectSingleNode("rate").Attributes["IMDB"].Value);
                 resultString.AppendLine();
-                resultString.Append("Рейтинг Кінопошуку: " + item.kinopoiskRate);
+                resultString.Append("Рейтинг Кінопошуку: " + item.SelectSingleNode("rate").Attributes["kinopoisk"].Value);
                 resultString.AppendLine();
-                resultString.Append("Час: " + item.length + " хв");
+                resultString.Append("Час: " + item.SelectSingleNode("length").FirstChild.Value + " хв");
                 resultString.AppendLine();
-                resultString.Append("Анотація:\n" + item.anotation);
+                resultString.Append("Анотація:\n" + item.SelectSingleNode("anotation").FirstChild.Value);
                 resultString.AppendLine();
                 resultString.AppendLine();
             }
             return resultString.ToString();
+        }
+
+        public string SaxQuery()
+        {
+            if (_saxDataBase == null)
+                return "";
+
+            return "";
         }
     }
 }

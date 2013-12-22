@@ -65,8 +65,14 @@ namespace Lab3.XML
             }
         }
 
-        public string GetResult(string title, string genre, int fromYear, int toYear, string country, string director,
-            string actor, int imdbRate, double kinopoiskRate, string anotation, int length)
+        /*
+         * queryMethod:
+         * 1 - LinqToXml
+         * 2 - XPath (Dom)
+         * 3 - Simple (Sax)
+         */
+        public void GetResult(string title, string genre, int fromYear, int toYear, string country, string director,
+            string actor, int imdbRate, double kinopoiskRate, string anotation, int length, int queryMethod)
         {
             _dataBaseQuery.Title = title;
             _dataBaseQuery.Genre = genre;
@@ -79,34 +85,31 @@ namespace Lab3.XML
             _dataBaseQuery.KinopoiskRate = kinopoiskRate;
             _dataBaseQuery.Anotation = anotation;
             _dataBaseQuery.Length = length;
-            return _dataBaseQuery.LinqToXmlQuery();
-        }
-
-        string GetNodes(XmlNode node)
-        {
-            var result = new StringBuilder();
-            GetNodes(node, 0, result);
-            return result.ToString();
-        }
-
-        void GetNodes(XmlNode node, int level, StringBuilder result)
-        {
-            result.Append(node.Value);
-            foreach (XmlNode n in node.ChildNodes)
+            switch (queryMethod)
             {
-                GetNodes(n, level + 1, result);
+                case 1:
+                    _mainForm.ViewResult(_dataBaseQuery.LinqToXmlQuery());
+                    break;
+                case 2:
+                    _mainForm.ViewResult(_dataBaseQuery.XPathQuery());
+                    break;
             }
         }
 
-        public void CreateNode()
+        public void MakeXslTransform()
         {
-            //var node = _studentDatabase.SelectSingleNode("//rate");
-            //node.Attributes["IMDB"].Value = "2";
-            //var node = _studentDatabase.SelectSingleNode("//country");
-            //node.FirstChild.Value = "Росія";
-            //node.AppendChild(_studentDatabase.CreateTextNode("zskjfgkjzfskbgkbsfg"));
-            //root.AppendChild(node);
-            //_studentDatabase.Save(@"d:\Projects\UnivProjects\Lab3.XML\Lab3.XML\newBase.xml");
+            
         }
+
+        //public void CreateNode()
+        //{
+        //    var node = _studentDatabase.SelectSingleNode("//rate");
+        //    node.Attributes["IMDB"].Value = "2";
+        //    var node = _studentDatabase.SelectSingleNode("//country");
+        //    node.FirstChild.Value = "Росія";
+        //    node.AppendChild(_studentDatabase.CreateTextNode("zskjfgkjzfskbgkbsfg"));
+        //    root.AppendChild(node);
+        //    _studentDatabase.Save(@"d:\Projects\UnivProjects\Lab3.XML\Lab3.XML\newBase.xml");
+        //}
     }
 }
