@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml;
 using System.IO;
 using System.Xml.Serialization;
 using System.Xml.Linq;
-using System.Windows.Forms;
+using System.Xml.Xsl;
 
 namespace Lab3.XML
 {
     class DataBase
     {
         private MainForm _mainForm;
-        private string _filePath = null;
+        private string _xmlPath = null;
+        private string _xslPath = null;
         private XmlQuery _dataBaseQuery = new XmlQuery();
 
         public DataBase(MainForm mainForm)
@@ -45,14 +47,14 @@ namespace Lab3.XML
         {
             if (String.IsNullOrEmpty(path))
             {
-                _mainForm.ChangeXmlPath(_filePath ?? "");
+                _mainForm.ChangeXmlPath(_xmlPath ?? "");
                 //View LoadXmlDocumentError
                 return;
             }
             try
             {
                 var dataBase = XDocument.Load(path);
-                _filePath = path;
+                _xmlPath = path;
                 _mainForm.ChangeXmlPath(path);
                 Init(dataBase);
                 _dataBaseQuery.LoadXmlFile(path);
@@ -60,7 +62,7 @@ namespace Lab3.XML
             }
             catch (Exception)
             {
-               _mainForm.ChangeXmlPath(_filePath ?? "");
+               _mainForm.ChangeXmlPath(_xmlPath ?? "");
                 //View LoadXmlDocumentError
             }
         }
@@ -89,16 +91,53 @@ namespace Lab3.XML
             {
                 case 1:
                     _mainForm.ViewResult(_dataBaseQuery.LinqToXmlQuery());
+                    MessageBox.Show("Пошук успішно завершений!", "Успіх", MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
                     break;
                 case 2:
                     _mainForm.ViewResult(_dataBaseQuery.XPathQuery());
+                    MessageBox.Show("Пошук успішно завершений!", "Успіх", MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
                     break;
+            }
+        }
+
+        public void LoadXslDocument(string path)
+        {
+            if (String.IsNullOrEmpty(path))
+            {
+                _mainForm.ChangeXslPath(_xslPath ?? "");
+                //View LoadXslDocumentError
+                return;
+            }
+            try
+            {
+                var xslt = new XslCompiledTransform();
+                xslt.Load(path);
+                _xslPath = path;
+                _mainForm.ChangeXslPath(path);
+            }
+            catch (Exception)
+            {
+                _mainForm.ChangeXslPath(_xslPath ?? "");
+                //View LoadXslDocumentError
             }
         }
 
         public void MakeXslTransform()
         {
-            
+            try
+            {
+                var xslt = new XslCompiledTransform();
+                xslt.Load(_xslPath);
+                xslt.Transform(_xmlPath, _xmlPath + ".html");
+                MessageBox.Show("Трансформація успішно завершена!", "Успіх", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception)
+            {
+                //View LoadXslDocumentError
+            }
         }
 
         //public void CreateNode()

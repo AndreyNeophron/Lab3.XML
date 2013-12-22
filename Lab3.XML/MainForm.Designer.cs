@@ -57,11 +57,13 @@
             this.anotation = new System.Windows.Forms.TextBox();
             this.length = new System.Windows.Forms.TextBox();
             this.makeXslTransform = new System.Windows.Forms.Button();
+            this.xslPathInvite = new System.Windows.Forms.Label();
+            this.xslPath = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // resultView
             // 
-            this.resultView.Location = new System.Drawing.Point(317, 38);
+            this.resultView.Location = new System.Drawing.Point(317, 64);
             this.resultView.Name = "resultView";
             this.resultView.Size = new System.Drawing.Size(326, 295);
             this.resultView.TabIndex = 0;
@@ -69,7 +71,7 @@
             // 
             // findButton
             // 
-            this.findButton.Location = new System.Drawing.Point(12, 310);
+            this.findButton.Location = new System.Drawing.Point(12, 336);
             this.findButton.Name = "findButton";
             this.findButton.Size = new System.Drawing.Size(75, 23);
             this.findButton.TabIndex = 1;
@@ -83,7 +85,7 @@
             this.xmlPath.Name = "xmlPath";
             this.xmlPath.Size = new System.Drawing.Size(523, 20);
             this.xmlPath.TabIndex = 2;
-            this.xmlPath.Text = "C:\\Users\\Роман\\Documents\\GitHub\\Lab3.XML\\Lab3.XML\\base.xml";
+            this.xmlPath.Text = "C:\\Users\\Роман\\Documents\\GitHub\\Lab3.XML\\Lab3.XML\\Base.xml";
             this.xmlPath.KeyDown += new System.Windows.Forms.KeyEventHandler(this.xmlPath_KeyDown);
             // 
             // xmlPathInvite
@@ -98,7 +100,7 @@
             // titleCheck
             // 
             this.titleCheck.AutoSize = true;
-            this.titleCheck.Location = new System.Drawing.Point(12, 40);
+            this.titleCheck.Location = new System.Drawing.Point(12, 66);
             this.titleCheck.Name = "titleCheck";
             this.titleCheck.Size = new System.Drawing.Size(61, 17);
             this.titleCheck.TabIndex = 4;
@@ -107,7 +109,7 @@
             // 
             // title
             // 
-            this.title.Location = new System.Drawing.Point(120, 38);
+            this.title.Location = new System.Drawing.Point(120, 64);
             this.title.Name = "title";
             this.title.Size = new System.Drawing.Size(191, 20);
             this.title.TabIndex = 5;
@@ -115,7 +117,7 @@
             // genreCheck
             // 
             this.genreCheck.AutoSize = true;
-            this.genreCheck.Location = new System.Drawing.Point(12, 63);
+            this.genreCheck.Location = new System.Drawing.Point(12, 89);
             this.genreCheck.Name = "genreCheck";
             this.genreCheck.Size = new System.Drawing.Size(58, 17);
             this.genreCheck.TabIndex = 6;
@@ -125,7 +127,7 @@
             // yearCheck
             // 
             this.yearCheck.AutoSize = true;
-            this.yearCheck.Location = new System.Drawing.Point(12, 92);
+            this.yearCheck.Location = new System.Drawing.Point(12, 118);
             this.yearCheck.Name = "yearCheck";
             this.yearCheck.Size = new System.Drawing.Size(100, 17);
             this.yearCheck.TabIndex = 8;
@@ -135,7 +137,7 @@
             // countryCheck
             // 
             this.countryCheck.AutoSize = true;
-            this.countryCheck.Location = new System.Drawing.Point(12, 142);
+            this.countryCheck.Location = new System.Drawing.Point(12, 168);
             this.countryCheck.Name = "countryCheck";
             this.countryCheck.Size = new System.Drawing.Size(63, 17);
             this.countryCheck.TabIndex = 9;
@@ -145,7 +147,7 @@
             // directorCheck
             // 
             this.directorCheck.AutoSize = true;
-            this.directorCheck.Location = new System.Drawing.Point(12, 165);
+            this.directorCheck.Location = new System.Drawing.Point(12, 191);
             this.directorCheck.Name = "directorCheck";
             this.directorCheck.Size = new System.Drawing.Size(74, 17);
             this.directorCheck.TabIndex = 10;
@@ -155,7 +157,7 @@
             // actorCheck
             // 
             this.actorCheck.AutoSize = true;
-            this.actorCheck.Location = new System.Drawing.Point(12, 188);
+            this.actorCheck.Location = new System.Drawing.Point(12, 214);
             this.actorCheck.Name = "actorCheck";
             this.actorCheck.Size = new System.Drawing.Size(59, 17);
             this.actorCheck.TabIndex = 11;
@@ -165,7 +167,7 @@
             // imdbRateCheck
             // 
             this.imdbRateCheck.AutoSize = true;
-            this.imdbRateCheck.Location = new System.Drawing.Point(12, 211);
+            this.imdbRateCheck.Location = new System.Drawing.Point(12, 237);
             this.imdbRateCheck.Name = "imdbRateCheck";
             this.imdbRateCheck.Size = new System.Drawing.Size(56, 17);
             this.imdbRateCheck.TabIndex = 12;
@@ -175,7 +177,7 @@
             // kinopoiskRateCheck
             // 
             this.kinopoiskRateCheck.AutoSize = true;
-            this.kinopoiskRateCheck.Location = new System.Drawing.Point(12, 234);
+            this.kinopoiskRateCheck.Location = new System.Drawing.Point(12, 260);
             this.kinopoiskRateCheck.Name = "kinopoiskRateCheck";
             this.kinopoiskRateCheck.Size = new System.Drawing.Size(81, 17);
             this.kinopoiskRateCheck.TabIndex = 13;
@@ -185,7 +187,7 @@
             // anotationCheck
             // 
             this.anotationCheck.AutoSize = true;
-            this.anotationCheck.Location = new System.Drawing.Point(12, 257);
+            this.anotationCheck.Location = new System.Drawing.Point(12, 283);
             this.anotationCheck.Name = "anotationCheck";
             this.anotationCheck.Size = new System.Drawing.Size(73, 17);
             this.anotationCheck.TabIndex = 14;
@@ -195,7 +197,7 @@
             // lengthCheck
             // 
             this.lengthCheck.AutoSize = true;
-            this.lengthCheck.Location = new System.Drawing.Point(12, 280);
+            this.lengthCheck.Location = new System.Drawing.Point(12, 306);
             this.lengthCheck.Name = "lengthCheck";
             this.lengthCheck.Size = new System.Drawing.Size(96, 17);
             this.lengthCheck.TabIndex = 15;
@@ -206,7 +208,7 @@
             // 
             this.fromYear.CustomFormat = "yyyy";
             this.fromYear.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.fromYear.Location = new System.Drawing.Point(152, 88);
+            this.fromYear.Location = new System.Drawing.Point(152, 114);
             this.fromYear.Name = "fromYear";
             this.fromYear.ShowUpDown = true;
             this.fromYear.Size = new System.Drawing.Size(57, 20);
@@ -216,7 +218,7 @@
             // 
             this.toYear.CustomFormat = "yyyy";
             this.toYear.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.toYear.Location = new System.Drawing.Point(152, 114);
+            this.toYear.Location = new System.Drawing.Point(152, 140);
             this.toYear.Name = "toYear";
             this.toYear.ShowUpDown = true;
             this.toYear.Size = new System.Drawing.Size(57, 20);
@@ -225,7 +227,7 @@
             // fromInvite
             // 
             this.fromInvite.AutoSize = true;
-            this.fromInvite.Location = new System.Drawing.Point(121, 93);
+            this.fromInvite.Location = new System.Drawing.Point(121, 119);
             this.fromInvite.Name = "fromInvite";
             this.fromInvite.Size = new System.Drawing.Size(25, 13);
             this.fromInvite.TabIndex = 18;
@@ -234,7 +236,7 @@
             // toInvite
             // 
             this.toInvite.AutoSize = true;
-            this.toInvite.Location = new System.Drawing.Point(121, 118);
+            this.toInvite.Location = new System.Drawing.Point(121, 144);
             this.toInvite.Name = "toInvite";
             this.toInvite.Size = new System.Drawing.Size(25, 13);
             this.toInvite.TabIndex = 19;
@@ -244,7 +246,7 @@
             // 
             this.genres.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.genres.FormattingEnabled = true;
-            this.genres.Location = new System.Drawing.Point(120, 61);
+            this.genres.Location = new System.Drawing.Point(120, 87);
             this.genres.Name = "genres";
             this.genres.Size = new System.Drawing.Size(191, 21);
             this.genres.Sorted = true;
@@ -254,7 +256,7 @@
             // 
             this.countries.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.countries.FormattingEnabled = true;
-            this.countries.Location = new System.Drawing.Point(120, 140);
+            this.countries.Location = new System.Drawing.Point(120, 166);
             this.countries.Name = "countries";
             this.countries.Size = new System.Drawing.Size(190, 21);
             this.countries.Sorted = true;
@@ -262,49 +264,49 @@
             // 
             // director
             // 
-            this.director.Location = new System.Drawing.Point(120, 163);
+            this.director.Location = new System.Drawing.Point(120, 189);
             this.director.Name = "director";
             this.director.Size = new System.Drawing.Size(190, 20);
             this.director.TabIndex = 22;
             // 
             // actor
             // 
-            this.actor.Location = new System.Drawing.Point(120, 186);
+            this.actor.Location = new System.Drawing.Point(120, 212);
             this.actor.Name = "actor";
             this.actor.Size = new System.Drawing.Size(190, 20);
             this.actor.TabIndex = 23;
             // 
             // imdbRate
             // 
-            this.imdbRate.Location = new System.Drawing.Point(120, 209);
+            this.imdbRate.Location = new System.Drawing.Point(120, 235);
             this.imdbRate.Name = "imdbRate";
             this.imdbRate.Size = new System.Drawing.Size(190, 20);
             this.imdbRate.TabIndex = 24;
             // 
             // kinopoiskRate
             // 
-            this.kinopoiskRate.Location = new System.Drawing.Point(120, 231);
+            this.kinopoiskRate.Location = new System.Drawing.Point(120, 257);
             this.kinopoiskRate.Name = "kinopoiskRate";
             this.kinopoiskRate.Size = new System.Drawing.Size(190, 20);
             this.kinopoiskRate.TabIndex = 25;
             // 
             // anotation
             // 
-            this.anotation.Location = new System.Drawing.Point(120, 255);
+            this.anotation.Location = new System.Drawing.Point(120, 281);
             this.anotation.Name = "anotation";
             this.anotation.Size = new System.Drawing.Size(190, 20);
             this.anotation.TabIndex = 26;
             // 
             // length
             // 
-            this.length.Location = new System.Drawing.Point(120, 278);
+            this.length.Location = new System.Drawing.Point(120, 304);
             this.length.Name = "length";
             this.length.Size = new System.Drawing.Size(190, 20);
             this.length.TabIndex = 27;
             // 
             // makeXslTransform
             // 
-            this.makeXslTransform.Location = new System.Drawing.Point(93, 310);
+            this.makeXslTransform.Location = new System.Drawing.Point(93, 336);
             this.makeXslTransform.Name = "makeXslTransform";
             this.makeXslTransform.Size = new System.Drawing.Size(147, 23);
             this.makeXslTransform.TabIndex = 28;
@@ -312,12 +314,31 @@
             this.makeXslTransform.UseVisualStyleBackColor = true;
             this.makeXslTransform.Click += new System.EventHandler(this.makeXslTransform_Click);
             // 
+            // xslPathInvite
+            // 
+            this.xslPathInvite.AutoSize = true;
+            this.xslPathInvite.Location = new System.Drawing.Point(9, 41);
+            this.xslPathInvite.Name = "xslPathInvite";
+            this.xslPathInvite.Size = new System.Drawing.Size(108, 13);
+            this.xslPathInvite.TabIndex = 29;
+            this.xslPathInvite.Text = "Шлях до XSL файлу:";
+            // 
+            // xslPath
+            // 
+            this.xslPath.Location = new System.Drawing.Point(120, 38);
+            this.xslPath.Name = "xslPath";
+            this.xslPath.Size = new System.Drawing.Size(523, 20);
+            this.xslPath.TabIndex = 30;
+            this.xslPath.Text = "C:\\Users\\Роман\\Documents\\GitHub\\Lab3.XML\\Lab3.XML\\BaseToHTML.xsl";
+            this.xslPath.KeyDown += new System.Windows.Forms.KeyEventHandler(this.xslPath_KeyDown);
+            // 
             // MainForm
             // 
-            this.AcceptButton = this.findButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(655, 345);
+            this.ClientSize = new System.Drawing.Size(655, 372);
+            this.Controls.Add(this.xslPath);
+            this.Controls.Add(this.xslPathInvite);
             this.Controls.Add(this.makeXslTransform);
             this.Controls.Add(this.length);
             this.Controls.Add(this.anotation);
@@ -386,6 +407,8 @@
         private System.Windows.Forms.TextBox anotation;
         private System.Windows.Forms.TextBox length;
         private System.Windows.Forms.Button makeXslTransform;
+        private System.Windows.Forms.Label xslPathInvite;
+        private System.Windows.Forms.TextBox xslPath;
     }
 }
 

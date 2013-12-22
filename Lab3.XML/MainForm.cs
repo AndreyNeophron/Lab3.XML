@@ -19,6 +19,7 @@ namespace Lab3.XML
             InitializeComponent();
             dataBase = new DataBase(this);
             dataBase.LoadXmlDocument(xmlPath.Text);
+            dataBase.LoadXslDocument(xslPath.Text);
         }
 
         private void findButton_Click(object sender, EventArgs e)
@@ -146,6 +147,19 @@ namespace Lab3.XML
         private void makeXslTransform_Click(object sender, EventArgs e)
         {
             dataBase.MakeXslTransform();
+        }
+
+        private void xslPath_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                dataBase.LoadXslDocument(xslPath.Text);
+            }
+        }
+
+        public void ChangeXslPath(string path)
+        {
+            xslPath.Text = path;
         }
     }
 }
