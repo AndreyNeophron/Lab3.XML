@@ -99,6 +99,11 @@ namespace Lab3.XML
                     MessageBox.Show("Пошук успішно завершений!", "Успіх", MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
                     break;
+                case 3:
+                    _mainForm.ViewResult(_dataBaseQuery.SaxQuery());
+                    MessageBox.Show("Пошук успішно завершений!", "Успіх", MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                    break;
             }
         }
 

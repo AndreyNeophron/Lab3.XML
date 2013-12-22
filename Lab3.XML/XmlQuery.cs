@@ -168,8 +168,7 @@ namespace Lab3.XML
             resultString.AppendLine("Кількість результатів: " + result.Count + "\n");
             foreach (var item in result)
             {
-                resultString.Append("Назва: " + item.title);
-                resultString.AppendLine();
+                resultString.AppendLine("Назва: " + item.title);
                 for (int i = 0; i < item.genres.Count; i++)
                 {
                     if (i == 0)
@@ -178,8 +177,7 @@ namespace Lab3.XML
                         resultString.Append(", " + item.genres[i]); 
                 }
                 resultString.AppendLine();
-                resultString.Append("Рік: " + item.year);
-                resultString.AppendLine();
+                resultString.AppendLine("Рік: " + item.year);
                 for (int i = 0; i < item.countries.Count; i++)
                 {
                     if (i == 0)
@@ -204,14 +202,10 @@ namespace Lab3.XML
                         resultString.Append(", " + item.actors[i]);
                 }
                 resultString.AppendLine();
-                resultString.Append("Рейтинг IMDB: " + item.imdbRate);
-                resultString.AppendLine();
-                resultString.Append("Рейтинг Кінопошуку: " + item.kinopoiskRate);
-                resultString.AppendLine();
-                resultString.Append("Час: " + item.length + " хв");
-                resultString.AppendLine();
-                resultString.Append("Анотація:\n" + item.anotation);
-                resultString.AppendLine();
+                resultString.AppendLine("Рейтинг IMDB: " + item.imdbRate);
+                resultString.AppendLine("Рейтинг Кінопошуку: " + item.kinopoiskRate);
+                resultString.AppendLine("Час: " + item.length + " хв");
+                resultString.AppendLine("Анотація:\n" + item.anotation);
                 resultString.AppendLine();
             }
             return resultString.ToString();
@@ -269,7 +263,7 @@ namespace Lab3.XML
                 tempDocument.SelectSingleNode("mediaDatabase").AppendChild(tempDocument.ImportNode(item, true));
             resultDocument = (XmlDocument)tempDocument.CloneNode(true);
 
-            resultNodes = resultDocument.SelectNodes("/mediaDatabase/film[" + _length + "=-1 or length=" + _length + "]");
+            resultNodes = resultDocument.SelectNodes("/mediaDatabase/film[" + _length + "=-1 or length>=" + _length + "]");
             tempDocument.SelectSingleNode("mediaDatabase").RemoveAll();
             foreach (XmlNode item in resultNodes)
                 tempDocument.SelectSingleNode("mediaDatabase").AppendChild(tempDocument.ImportNode(item, true));
@@ -286,8 +280,7 @@ namespace Lab3.XML
                                     resultDocument.SelectSingleNode("mediaDatabase").ChildNodes.Count + "\n");
             foreach (XmlNode item in resultDocument.SelectSingleNode("mediaDatabase").ChildNodes)
             {
-                resultString.Append("Назва: " + item.SelectSingleNode("title").FirstChild.Value);
-                resultString.AppendLine();
+                resultString.AppendLine("Назва: " + item.SelectSingleNode("title").FirstChild.Value);
                 for (int i = 0; i < item.SelectNodes("genre").Count; i++)
                 {
                     if (i == 0)
@@ -296,8 +289,7 @@ namespace Lab3.XML
                         resultString.Append(", " + item.SelectNodes("genre")[i].FirstChild.Value);
                 }
                 resultString.AppendLine();
-                resultString.Append("Рік: " + item.SelectSingleNode("year").FirstChild.Value);
-                resultString.AppendLine();
+                resultString.AppendLine("Рік: " + item.SelectSingleNode("year").FirstChild.Value);
                 for (int i = 0; i < item.SelectNodes("country").Count; i++)
                 {
                     if (i == 0)
@@ -322,14 +314,10 @@ namespace Lab3.XML
                         resultString.Append(", " + item.SelectNodes("character")[i].FirstChild.Value);
                 }
                 resultString.AppendLine();
-                resultString.Append("Рейтинг IMDB: " + item.SelectSingleNode("rate").Attributes["IMDB"].Value);
-                resultString.AppendLine();
-                resultString.Append("Рейтинг Кінопошуку: " + item.SelectSingleNode("rate").Attributes["kinopoisk"].Value);
-                resultString.AppendLine();
-                resultString.Append("Час: " + item.SelectSingleNode("length").FirstChild.Value + " хв");
-                resultString.AppendLine();
-                resultString.Append("Анотація:\n" + item.SelectSingleNode("anotation").FirstChild.Value);
-                resultString.AppendLine();
+                resultString.AppendLine("Рейтинг IMDB: " + item.SelectSingleNode("rate").Attributes["IMDB"].Value);
+                resultString.AppendLine("Рейтинг Кінопошуку: " + item.SelectSingleNode("rate").Attributes["kinopoisk"].Value);
+                resultString.AppendLine("Час: " + item.SelectSingleNode("length").FirstChild.Value + " хв");
+                resultString.AppendLine("Анотація:\n" + item.SelectSingleNode("anotation").FirstChild.Value);
                 resultString.AppendLine();
             }
             return resultString.ToString();
@@ -339,8 +327,128 @@ namespace Lab3.XML
         {
             if (_saxDataBase == null)
                 return "";
-
-            return "";
+            bool isAddFilm = false,
+                isGenreOk = false,
+                isCountryOk = false,
+                isDirectorOk = false,
+                isActorOk = false;
+            var filmDate = new StringBuilder();
+            var resultString = new StringBuilder();
+            int resultCount = 0;
+            while (_saxDataBase.Read())
+            {
+                switch (_saxDataBase.NodeType)
+                {
+                    case XmlNodeType.Element:
+                        if (_saxDataBase.Name == "film")
+                        {
+                            if (isAddFilm && isGenreOk && isCountryOk && isDirectorOk && isActorOk)
+                            {
+                                resultString.AppendLine(filmDate.ToString());
+                                resultCount++;
+                            }
+                            filmDate = new StringBuilder();
+                            isAddFilm = true;
+                            isGenreOk = false;
+                            isCountryOk = false;
+                            isDirectorOk = false;
+                            isActorOk = false;
+                        }
+                        else if (isAddFilm)
+                        {
+                            if (_saxDataBase.Name == "title")
+                            {
+                                _saxDataBase.Read();
+                                if (_saxDataBase.Value.Contains(_title))
+                                    filmDate.AppendLine("Назва: " + _saxDataBase.Value);
+                                else
+                                    isAddFilm = false;
+                            }
+                            else if (_saxDataBase.Name == "genre")
+                            {
+                                _saxDataBase.Read();
+                                if (_genre == "" || _saxDataBase.Value ==_genre)
+                                    isGenreOk = true;
+                                filmDate.AppendLine("Жанр: " + _saxDataBase.Value);
+                            }
+                            else if (_saxDataBase.Name == "year")
+                            {
+                                _saxDataBase.Read();
+                                if (_fromYear == -1 || (Convert.ToInt32(_saxDataBase.Value) >= _fromYear && Convert.ToInt32(_saxDataBase.Value) <= _toYear))
+                                    filmDate.AppendLine("Рік: " + _saxDataBase.Value);
+                                else
+                                    isAddFilm = false;
+                            }
+                            else if (_saxDataBase.Name == "country")
+                            {
+                                _saxDataBase.Read();
+                                if (_country == "" || _saxDataBase.Value == _country)
+                                    isCountryOk = true;
+                                filmDate.AppendLine("Країна: " + _saxDataBase.Value);
+                            }
+                            else if (_saxDataBase.Name == "director")
+                            {
+                                _saxDataBase.Read();
+                                if (_director == "" || _saxDataBase.Value.Contains(_director))
+                                    isDirectorOk = true;
+                                filmDate.AppendLine("Режисер: " + _saxDataBase.Value);
+                            }
+                            else if (_saxDataBase.Name == "character")
+                            {
+                                _saxDataBase.Read();
+                                if (_actor == "" || _saxDataBase.Value.Contains(_actor))
+                                    isActorOk = true;
+                                filmDate.AppendLine("Актор: " + _saxDataBase.Value);
+                            }
+                            else if (_saxDataBase.Name == "rate")
+                            {
+                                while (_saxDataBase.MoveToNextAttribute())
+                                {
+                                    if (_saxDataBase.Name == "IMDB")
+                                    {
+                                        if (_imdbRate == -1 || Convert.ToInt32(_saxDataBase.Value) >= _imdbRate)
+                                            filmDate.AppendLine("Рейтинг IMDB: " + _saxDataBase.Value);
+                                        else
+                                            isAddFilm = false;
+                                    }
+                                    else if (_saxDataBase.Name == "kinopoisk")
+                                    {
+                                        var provider = new NumberFormatInfo();
+                                        provider.NumberDecimalSeparator = ".";
+                                        if (Math.Abs(_kinopoiskRate + 1) < 1e-6 || Convert.ToDouble(_saxDataBase.Value, provider) >= _kinopoiskRate - 1e-6)
+                                            filmDate.AppendLine("Рейтинг Кінопошуку: " + _saxDataBase.Value);
+                                        else
+                                            isAddFilm = false;
+                                    }
+                                }
+                            }
+                            else if (_saxDataBase.Name == "length")
+                            {
+                                _saxDataBase.Read();
+                                if (_length == -1 || Convert.ToInt32(_saxDataBase.Value) >= _length)
+                                    filmDate.AppendLine("Час: " + _saxDataBase.Value);
+                                else
+                                    isAddFilm = false;
+                            }
+                            else if (_saxDataBase.Name == "anotation")
+                            {
+                                _saxDataBase.Read();
+                                if (_saxDataBase.Value.Contains(_anotation))
+                                    filmDate.AppendLine("Анотація:\n" + _saxDataBase.Value);
+                                else
+                                    isAddFilm = false;
+                            }
+                        }
+                        break;
+                }
+            }
+            if (isAddFilm && isGenreOk && isCountryOk && isDirectorOk && isActorOk)
+            {
+                resultString.AppendLine(filmDate.ToString());
+                resultCount++;
+            }
+            resultString.Insert(0, "Кількість результатів: " + resultCount + "\n\n");
+            return resultString.ToString();
         }
     }
 }
