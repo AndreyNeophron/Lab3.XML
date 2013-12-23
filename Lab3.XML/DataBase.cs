@@ -57,8 +57,7 @@ namespace Lab3.XML
                 _xmlPath = path;
                 _mainForm.ChangeXmlPath(path);
                 Init(dataBase);
-                _dataBaseQuery.LoadXmlFile(path);
-                _dataBaseQuery.LinqToXmlQuery();                
+                _dataBaseQuery.LoadXmlFile(path);                
             }
             catch (Exception)
             {
